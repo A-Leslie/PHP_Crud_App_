@@ -77,7 +77,7 @@ if(isset($_POST['submit'])){
                 </div>   
                 <div>
                     <button type="submit" class="btn btn-success" name="submit">Update</button>
-                    <a href="les.php" class="btn btn-danger">Cancel</a>
+                    <a href="index.php" class="btn btn-danger">Cancel</a>
                 </div>
         </form>
     </div>
