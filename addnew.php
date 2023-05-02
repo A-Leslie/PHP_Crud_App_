@@ -5,13 +5,15 @@ if(isset($_POST['submit'])){
     $Last_name =$_POST['last_name'];
     $email =$_POST['email'];
     $Gender =$_POST['gender'];
-    $sql ="INSERT INTO users(fname,lname,email,gender) VALUES
-    ('$First_name','$Last_name','$email','$Gender')";
+    $password=$_POST['password'];
+    $hashed_password=password_hash($password,PASSWORD_DEFAULT);
+    $sql ="INSERT INTO users(fname,lname,email,gender,password) VALUES
+    ('$First_name','$Last_name','$email','$Gender','$password')";
     $result= mysqli_query($conn,$sql);
 
 
   if($result){
-    header("location:les.php?msg=New record created successfully ");
+    header("location:index.php?msg=New record created successfully ");
     
   }
   else{
@@ -57,6 +59,10 @@ echo "";
              <div class="mb-3">
                     <label class="form-label">Email:</label>
                     <input type="email" class="form-control" name="email" placeholder="johndoe@gmail.com">
+                </div>
+                <div class="col">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password">
                 </div>
                 <div class="form-group mb-3">
                     <label>Gender:</label>&nbsp;
