@@ -1,30 +1,28 @@
 <?php
-include "connection.php" ;
-if(isset($_POST['submit'])){
-    $First_name =$_POST['first_name'];
-    $Last_name =$_POST['last_name'];
-    $email =$_POST['email'];
-    $Gender =$_POST['gender'];
-    $password=$_POST['password'];
-    $hashed_password=password_hash($password,PASSWORD_DEFAULT);
-    $sql ="INSERT INTO users(fname,lname,email,gender,password) VALUES
-    ('$First_name','$Last_name','$email','$Gender','$password')";
-    $result= mysqli_query($conn,$sql);
+    include 'connection.php';
+    if(isset($_POST['submit'])){
+        $email=$_POST['email'];
+        $password=($_POST['password']);
+        $sql="SELECT *FROM users WHERE `email`='$email'";
+        $result=$conn->query($sql);
+        if($result){
+        $user_info=mysqli_fetch_assoc($result);
+ if ($user_info['email']===$email && $user_info['password']===$password){
+    session_start();
+$_SESSION['email']=$email;
+$_SESSION['password']=$password;
 
+header('location:index.php?id:33');
+ }
+ else{
+    header('Location:login.php?msg=Invalid email or password');
+ }
+    }else{
+echo "Invalid data";
+    } 
 
-  if($result){
-    header("location:login.php?msg=New record created successfully ");
-    
-  }
-  else{
-    echo" Failed: " . mysqli_error($conn); 
-  }
-echo "";
 }
-
-
-?>
-
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,21 +38,11 @@ echo "";
     <nav class="navbar navbar-light justify-content-center fs-3 mb-5" style="background-color:dodgerblue;">Participate in Tour</nav>
     <div class="container">
         <div class="text-center mb-4">
-            <h3>New Participant</h3>
-            <p class="text-muted">Complete the form below to participate</p>
+            <h3>Login</h3>
+            <p class="text-muted">Login to edit</p>
         </div>
     <div class="container d-flex justify-content-center">
         <form action="" method="POST" style="width:50vw; min-width:300px;" >
-            <div class="row">
-                <div class="col">
-                    <label class="form-label">First Name:</label>
-                    <input type="text" class="form-control" name="first_name" placeholder="John">
-                </div>
-                <div class="col">
-                    <label class="form-label">Last Name:</label>
-                    <input type="text" class="form-control" name="last_name" placeholder="Doe">
-                </div>
-               
             </div>
              <div class="mb-3">
                     <label class="form-label">Email:</label>
@@ -64,15 +52,6 @@ echo "";
                     <label class="form-label">Password</label>
                     <input type="password" class="form-control" name="password">
                 </div>
-                <div class="form-group mb-3">
-                    <label>Gender:</label>&nbsp;
-                    <input type="radio" class="form-check-input" name="gender" id="male" value="male">
-                    <label for="male" class="form-input-label">Male</label>
-                    &nbsp;
-                    <input type="radio" class="form-check-input" name="gender" id="female" value="female">
-                    <label for="female" class="form-input-label">Female</label>
-
-                </div>   
                 <div>
                     <button type="submit" class="btn btn-success" name="submit">Save</button>
                     <a href="index.php" class="btn btn-danger">Cancel</a>
